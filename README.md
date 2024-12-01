@@ -5,3 +5,5 @@ I am total rookie with this language so challenging my self and learning new is 
 
 # Puzzles
 ## 2024
+
+- Historian Hysteria

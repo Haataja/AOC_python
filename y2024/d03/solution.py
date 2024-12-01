@@ -2,21 +2,12 @@ from aocd.models import Puzzle
 
 
 def parse(data):
-    rows = data.split()
-    map1 = rows[0::2]
-    map2 = rows[1::2]
-    return map1, map2
+    return data.split()
 
 
 def part1(data):
     """Solve part 1."""
     number_sum = 0
-    map1 = data[0]
-    map2 = data[1]
-    map1.sort()
-    map2.sort()
-    for index in range(len(map1)):
-        number_sum = number_sum + abs(int(map1[index]) - int(map2[index]))
 
     return number_sum
 
@@ -24,11 +15,6 @@ def part1(data):
 def part2(data):
     """Solve part 2."""
     number_sum = 0
-    map1 = data[0]
-    map2 = data[1]
-
-    for location in map1:
-        number_sum = number_sum + int(location) * map2.count(location)
 
     return number_sum
 
@@ -59,7 +45,7 @@ def test():
 
 
 if __name__ == "__main__":
-    puzzle = Puzzle(year=2024, day=1)
+    puzzle = Puzzle(year=2024, day=3)
     print(puzzle.examples[0])
     test()
 
