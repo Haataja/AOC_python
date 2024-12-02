@@ -7,3 +7,4 @@ I am total rookie with this language so challenging my self and learning new is 
 ## 2024
 
 - Historian Hysteria
+- Red-Nosed Reports
