@@ -45,7 +45,7 @@ def test():
 
 
 if __name__ == "__main__":
-    puzzle = Puzzle(year=2024, day=6)
+    puzzle = Puzzle(year=2024, day=7)
     print(puzzle.examples)
     test()
 
