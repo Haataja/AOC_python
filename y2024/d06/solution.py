@@ -1,22 +1,80 @@
 from aocd.models import Puzzle
+from enum import Enum
 
 
 def parse(data):
-    return data.split()
+    floor_map = []
+    start = (0, 0)
+    rows = data.split("\n")
+    for row_index in range(len(rows)):
+        row = []
+        for c in rows[row_index]:
+            if c == '^':
+                start = (row_index, rows[row_index].index('^'))
+                row.append(".")
+            else:
+                row.append(c)
+
+        floor_map.append(row)
+
+    return floor_map, start
+
+
+class Direction(Enum):
+    UP = (-1, 0)
+    RIGHT = (0, 1)
+    DOWN = (1, 0)
+    LEFT = (0, -1)
+
+
+def determine_new_direction(old_direction):
+    if old_direction == Direction.UP:
+        return Direction.RIGHT
+    elif old_direction == Direction.RIGHT:
+        return Direction.DOWN
+    elif old_direction == Direction.DOWN:
+        return Direction.LEFT
+    elif old_direction == Direction.LEFT:
+        return Direction.UP
+
+
+def move(start, floor_map):
+    moves = []
+    current = start
+    inside = True
+    moving = Direction.UP
+    steps = 0
+    while inside:
+        steps += 1
+        new_step = (current[0] + moving.value[0], current[1] + moving.value[1])
+        if 0 <= new_step[0] < len(floor_map) and 0 <= new_step[1] < len(floor_map[0]):
+            if floor_map[new_step[0]][new_step[1]] == '#':
+                moving = determine_new_direction(moving)
+            else:
+                if moves.count(current) == 0:
+                    moves.append(current)
+                current = new_step
+        else:
+            if moves.count(current) == 0:
+                moves.append(current)
+
+            inside = False
+
+    return moves
 
 
 def part1(data):
     """Solve part 1."""
-    number_sum = 0
+    print(data)
+    start = data[1]
+    moves = move(start, data[0])
 
-    return number_sum
+    return len(moves)
 
 
 def part2(data):
     """Solve part 2."""
-    number_sum = 0
-
-    return number_sum
+    return 0
 
 
 def solve(puzzle_data):
@@ -38,10 +96,10 @@ def test():
 
     test2_data = parse(puzzle.examples[0].input_data)
     solution2 = part2(test2_data)
-    if solution2 == int(31):
+    if solution2 == int(6):
         print("TEST 2: YES!")
     else:
-        print("was {} should have been {}".format(solution2, 31))
+        print("was {} should have been {}".format(solution2, 6))
 
 
 if __name__ == "__main__":
