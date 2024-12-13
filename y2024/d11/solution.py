@@ -1,5 +1,5 @@
 from aocd.models import Puzzle
-
+import functools
 
 def parse(data):
     return list(map(lambda x: int(x), data.split()))
@@ -10,7 +10,7 @@ def part1(data, blinks):
     number_sum = 0
     # print(data)
     for index in range(blinks):
-        print(index)
+        # print(index)
         stone_index = 0
         while stone_index < len(data):
             if data[stone_index] == 0:
@@ -39,10 +39,38 @@ def part1(data, blinks):
     # print(data)
     return len(data)
 
+# https://www.reddit.com/r/adventofcode/comments/1hbnyx1/2024_day_11python_mega_tutorial/
+@functools.lru_cache(maxsize=None)
+def calc_number_of_stones_after_blinks(stone, blink, max_blinks):
+    if blink == max_blinks:
+        if len(str(stone)) % 2 == 0:
+            return 2
+        else:
+            return 1
+
+    second_stone = -1
+    if stone == 0:
+        first_stone = 1
+    elif len(str(stone)) % 2 == 0:
+        str_stone = str(stone)
+        half = int(len(str_stone) / 2)
+        first_stone = int(str_stone[:half])
+        second_stone = int(str_stone[half:])
+    else:
+        first_stone = stone * 2024
+
+    sum_of_stones = calc_number_of_stones_after_blinks(first_stone, blink + 1, max_blinks)
+    if second_stone != -1:
+        sum_of_stones += calc_number_of_stones_after_blinks(second_stone, blink + 1, max_blinks)
+    return sum_of_stones
+
 
 def part2(data):
     """Solve part 2."""
     number_sum = 0
+    for stone in data:
+        print("Part 2: {}".format(stone))
+        number_sum += calc_number_of_stones_after_blinks(stone, 0, 74)
 
     return number_sum
 
@@ -67,12 +95,12 @@ def test():
     else:
         print("was {} should have been {}".format(solution1, puzzle.examples[0].answer_a))
 
-    test2_data = parse("")
+    """test2_data = parse("125 17")
     solution2 = part2(test2_data)
-    if solution2 == int(31):
+    if solution2 == int(puzzle.examples[0].answer_a):
         print("TEST 2: YES!")
     else:
-        print("was {} should have been {}".format(solution2, 31))
+        print("was {} should have been {}".format(solution2, 31))"""
 
 
 if __name__ == "__main__":
