@@ -26,6 +26,16 @@ class Direction(Enum):
     DOWN = (1, 0)
     LEFT = (0, -1)
 
+    def __reversed__(self):
+        if self == Direction.UP:
+            return Direction.DOWN
+        elif self == Direction.DOWN:
+            return Direction.UP
+        elif self == Direction.LEFT:
+            return Direction.RIGHT
+        else:
+            return Direction.LEFT
+
 
 def determine_new_direction(old_direction):
     if old_direction == Direction.UP:
