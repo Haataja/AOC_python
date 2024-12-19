@@ -17,7 +17,10 @@ I am total rookie with this language so challenging my self and learning new is 
 - Disk Fragmenter
 - Hoof It
 - Plutonian Pebbles
+- Garden Groups (0/2)
 - Claw Contraption
 - Restroom Redoubt
+- Warehouse Woes (1/2)
+- Reindeer Maze
 - Chronospatial Computer (1/2)
 - RAM Run
