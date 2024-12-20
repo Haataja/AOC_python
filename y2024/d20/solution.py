@@ -1,14 +1,49 @@
 from aocd.models import Puzzle
-import re
+from y2024.d06.solution import Direction
 
 
 def parse(data):
-    return data.split()
+    rows = data.split()
+    walls = []
+    for row in range(len(rows)):
+        for col in range(len(rows[row])):
+            if rows[row][col] == "#":
+                walls.append((row, col))
+            elif rows[row][col] == "S":
+                start = (row, col)
+            elif rows[row][col] == "E":
+                end = (row, col)
+
+    return start, end, walls
 
 
 def part1(data):
     """Solve part 1."""
     number_sum = 0
+    (start, end, walls) = data
+    for r in range(15):
+        row = []
+        for c in range(15):
+            if (r, c) in walls:
+                row.append("#")
+            elif (r, c) == start:
+                row.append("S")
+            elif (r, c) == end:
+                row.append("E")
+            else:
+                row.append(".")
+        print("".join(row))
+
+    current = start
+    steps = [start]
+    while current != end:
+        direction = list(map(lambda x: (current[0] + x[0], current[1] + x[1]), [e.value for e in Direction]))
+        step = list(filter(lambda x: x not in walls and x not in steps, direction))
+        steps.append(step[0])
+        current = step[0]
+
+
+
     return number_sum
 
 
@@ -31,7 +66,7 @@ def solve(puzzle_data):
 def test():
     test1_data = parse(puzzle.examples[0].input_data)
     solution1 = part1(test1_data)
-    if solution1 == int(puzzle.examples[0].answer_a):
+    if solution1 == puzzle.examples[0].answer_a:
         print("TEST 1: YES!")
     else:
         print("was {} should have been {}".format(solution1, puzzle.examples[0].answer_a))
@@ -50,5 +85,5 @@ if __name__ == "__main__":
     test()
 
     puzzle_input = puzzle.input_data
-    solutions = solve(puzzle_input)
-    print("\n".join(str(solution) for solution in solutions))
+    #solutions = solve(puzzle_input)
+    #print("\n".join(str(solution) for solution in solutions))

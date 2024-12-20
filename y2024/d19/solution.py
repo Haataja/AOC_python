@@ -1,14 +1,42 @@
 from aocd.models import Puzzle
-import re
 
 
 def parse(data):
-    return data.split()
+    (available, designs) = data.split("\n\n")
+    towels = available.replace(" ","").split(",")
+    designs = designs.split("\n")
+    return towels, designs
 
+def check_if_possible(design, towels, length_of_towels):
+    index = 1
+    while index <= len(design):
+        if index > length_of_towels:
+            return False
+        sub_design = design[:index]
+        # print("{} {} {} {}".format(index, design, design[index:], len(design[index:])))
+        if sub_design in towels:
+            next_design = design[index:]
+            if len(next_design) > 0:
+                if check_if_possible(design[index:], towels, length_of_towels):
+                    return True
+            else:
+                return True
+        index += 1
+
+    return False
 
 def part1(data):
     """Solve part 1."""
     number_sum = 0
+    (towels, designs) = data
+    length_of_towels = max(list(map(lambda x: len(x), towels)))
+    print("max length of towels ", length_of_towels)
+    for design in designs:
+        print("Checking for {}".format(design))
+        if check_if_possible(design, towels, length_of_towels):
+            print("got true: {}".format(design))
+            number_sum += 1
+
     return number_sum
 
 
@@ -45,7 +73,7 @@ def test():
 
 
 if __name__ == "__main__":
-    puzzle = Puzzle(year=2024, day=18)
+    puzzle = Puzzle(year=2024, day=19)
     print(puzzle.examples)
     test()
 
